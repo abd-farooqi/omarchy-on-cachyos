@@ -36,6 +36,7 @@ enable_unit() { systemctl list-unit-files "$1" >/dev/null 2>&1 && sudo_run syste
 add_group() { getent group "$1" >/dev/null && ! id -nG "$USER" | grep -qw "$1" && sudo_run usermod -aG "$1" "$USER"; return 0; }
 
 enable_unit bluetooth.service || true
+pacman -Q thermald >/dev/null 2>&1 && enable_unit thermald.service
 pacman -Q cups >/dev/null 2>&1 && enable_unit cups.socket
 if [[ $DOCKER == y ]] && pacman -Q docker >/dev/null 2>&1; then
   enable_unit docker.socket

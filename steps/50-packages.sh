@@ -27,6 +27,13 @@ if lspci 2>/dev/null | grep -iE 'vga|3d|display' | grep -qi intel; then
   install_packages "Intel graphics" "${pkgs[@]}"
 fi
 
+# Same rule as Omarchy's installer: thermald on Intel laptops from Sandy Bridge on.
+cpu_model=$(awk -F: '/^model[[:space:]]*:/ {gsub(/ /, "", $2); print $2; exit}' /proc/cpuinfo)
+if grep -q GenuineIntel /proc/cpuinfo && (( ${cpu_model:-0} >= 42 )) && ls -d /sys/class/power_supply/BAT* >/dev/null 2>&1; then
+  mapfile -t pkgs < <(read_pkg_list "$lists/hardware-intel-laptop.txt")
+  install_packages "Intel laptop" "${pkgs[@]}"
+fi
+
 if [[ -s $RUN_DIR/package-failures.tsv ]]; then
   warn "$(wc -l <"$RUN_DIR/package-failures.tsv") package(s) could not be installed; they are listed at the end."
 else

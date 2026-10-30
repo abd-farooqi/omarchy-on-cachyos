@@ -14,7 +14,7 @@ source "$REPO_DIR/lib/doctor.sh"
 
 ANSWER_VARS=(OMARCHY_CHANNEL PKG_OMARCHY PKG_APPS PKG_DEV PKG_AUR DOCKER NORDVPN
   GIT_NAME GIT_EMAIL KB_LAYOUT KB_VARIANT KB_OPTIONS MONITOR_OUTPUT MONITOR_SCALE
-  THEME BROWSER WEBAPP_BROWSER_NAME LOGIN_SCREEN DISCORD_AUTOSTART SNAPSHOT)
+  THEME BROWSER WEBAPP_BROWSER_NAME LOGIN_SCREEN DISCORD_AUTOSTART HIBERNATE HIBERNATE_SIZE_GB SNAPSHOT)
 
 usage() {
   cat <<EOF
@@ -147,6 +147,12 @@ default_answers() {
   : "${GIT_EMAIL:=$(git config --global user.email 2>/dev/null || true)}"
   : "${KB_LAYOUT:=us,pk,af}" "${KB_VARIANT:=,urd-phonetic,ps}" "${KB_OPTIONS:=compose:caps,shift:both_capslock_cancel}"
   : "${MONITOR_OUTPUT:=$(ls /sys/class/drm 2>/dev/null | sed -n 's/^card[0-9]*-\(eDP-[0-9]*\)$/\1/p' | head -1)}"
+  local ram_gb has_battery=n
+  ram_gb=$(awk '/MemTotal/ {print int($2/1048576 + 0.5)}' /proc/meminfo)
+  ls -d /sys/class/power_supply/BAT* >/dev/null 2>&1 && has_battery=y
+  : "${HIBERNATE:=$has_battery}"
+  # 60% of RAM covers the kernel's default image size (40% of RAM) with room to spare.
+  : "${HIBERNATE_SIZE_GB:=$(( ram_gb * 6 / 10 > 8 ? (ram_gb * 6 + 9) / 10 : 8 ))}"
   : "${MONITOR_SCALE:=1.25}" "${THEME:=hackerman}" "${BROWSER:=firefox}" "${WEBAPP_BROWSER_NAME:=chrome}"
 }
 
@@ -172,6 +178,8 @@ ask_questions() {
   ask WEBAPP_BROWSER_NAME "Browser for Omarchy web apps (chrome / brave / chromium)" "$WEBAPP_BROWSER_NAME"
   ask_yn LOGIN_SCREEN "Use tuigreet as the login screen (replaces the current one)?" "$LOGIN_SCREEN"
   ask_yn DISCORD_AUTOSTART "Start Discord minimized at login?" "$DISCORD_AUTOSTART"
+  ask_yn HIBERNATE "Set up hibernate (swap file on disk; lid on battery suspends then hibernates after 3 h)?" "$HIBERNATE"
+  [[ $HIBERNATE == y ]] && ask HIBERNATE_SIZE_GB "Hibernate swap file size in GB" "$HIBERNATE_SIZE_GB"
   ask_yn SNAPSHOT "Take a snapper snapshot before changing anything?" "$SNAPSHOT"
 }
 
@@ -272,7 +280,7 @@ cmd_install() {
 
 cmd_update() {
   ASSUME_YES=1
-  cmd_install "system-update,omarchy-core,packages,omarchy-defaults,patches,system-tweaks,verify" "" 1 0
+  cmd_install "system-update,omarchy-core,packages,omarchy-defaults,patches,system-tweaks,hibernate,verify" "" 1 0
 }
 
 cmd_doctor() {

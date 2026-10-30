@@ -57,6 +57,17 @@ sudo_write() {
   sudo install -D -m "$mode" /dev/stdin "$target"
 }
 
+# Append stdin to a root-owned file.
+sudo_write_append() {
+  local target=$1
+  if (( DRY_RUN )); then
+    printf '%s# append to %s:%s\n' "$C_DIM" "$target" "$C_RST"
+    sed 's/^/    /'
+    return 0
+  fi
+  sudo tee -a "$target" >/dev/null
+}
+
 # retry <attempts> <command...>: for network operations that fail transiently.
 retry() {
   local attempts=$1 n=1 delay=3; shift

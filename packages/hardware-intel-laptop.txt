@@ -1,0 +1,2 @@
+# Installed on Intel laptops (Sandy Bridge or newer, battery present), as Omarchy does.
+thermald

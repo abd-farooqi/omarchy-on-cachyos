@@ -98,7 +98,13 @@ check_power() {
     warn_check "Only $(( ${delay:-0} / 1000000 )) s allowed to lock before sleep" "The screen can suspend unlocked when closing the lid also changes displays. Fix: ./setup.sh --only system-tweaks" system-tweaks
   if [[ -d /sys/class/power_supply/BAT0 || -d /sys/class/power_supply/BAT1 ]] &&
     [[ $(busctl call org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager CanHibernate 2>/dev/null) != *yes* ]]; then
-    warn_check "Hibernate is not available" "At critical battery the laptop can only suspend, and may run flat while asleep. Needs a disk swap file + resume setup (not automated yet)."
+    warn_check "Hibernate is not available" "At critical battery the laptop can only suspend, and may run flat while asleep. Fix: ./setup.sh --only hibernate (then reboot)" hibernate
+  elif [[ -f /etc/systemd/logind.conf.d/30-lid-suspend-then-hibernate.conf ]]; then
+    pass "Hibernate works; lid on battery suspends, then hibernates after 3 h"
+  fi
+  if grep -q GenuineIntel /proc/cpuinfo && ls -d /sys/class/power_supply/BAT* >/dev/null 2>&1; then
+    systemctl is-active thermald.service >/dev/null 2>&1 && pass "thermald is managing CPU temperature" ||
+      warn_check "thermald is not running" "Omarchy runs it on Intel laptops to avoid overheating/throttling. Fix: ./setup.sh --only packages,system" packages
   fi
 }
 

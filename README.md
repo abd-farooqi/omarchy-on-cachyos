@@ -106,6 +106,22 @@ optional/              pieces copied only when chosen (Discord autostart)
 - **New known error:** add a case to `lib/diagnose.sh`.
 - **New health check:** add a `check_*` function in `lib/doctor.sh` and call it from `run_doctor`.
 
+## Power, sleep and hibernate
+
+- The power button opens Omarchy's power menu instead of powering off instantly.
+- The lock screen gets 15 s to lock before sleep, and network drives are unmounted first.
+- Hibernate (if you answer yes): a swap file in its own Btrfs subvolume
+  (`/swap/swapfile`, about 60% of RAM, used only after zram), plus
+  `resume=`/`resume_offset=` in `/etc/default/grub.d/90-omarchy-on-cachyos-resume.cfg`.
+- Lid closed on battery: suspend, then hibernate after 3 h. On AC: suspend only.
+- Critical battery: hibernate instead of suspend.
+- thermald on Intel laptops, as Omarchy does.
+
+To undo hibernate: remove the swap line from `/etc/fstab`, `sudo swapoff /swap/swapfile`,
+delete the GRUB drop-in and run `sudo grub-mkconfig -o /boot/grub/grub.cfg`, then delete
+`/etc/systemd/logind.conf.d/30-lid-suspend-then-hibernate.conf` and
+`/etc/UPower/UPower.conf.d/10-critical-hibernate.conf`.
+
 ## Things it does not do
 
 - Install CachyOS or partition disks.
