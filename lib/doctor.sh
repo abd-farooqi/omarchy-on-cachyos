@@ -87,6 +87,21 @@ check_lock() {
     warn_check "Lock-before-suspend service is not enabled" "Fix: ./setup.sh --only system" system
 }
 
+logind_prop() { busctl get-property org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager "$1" 2>/dev/null | awk '{print $2}' | tr -d '"'; }
+
+check_power() {
+  [[ $(logind_prop HandlePowerKey) == ignore ]] &&
+    pass "Power button opens Omarchy's power menu (doesn't power off instantly)" ||
+    fail "Power button powers the laptop off instantly" "A stray press after waking from sleep shuts down and loses open apps. Fix: ./setup.sh --only system-tweaks" system-tweaks
+  local delay; delay=$(logind_prop InhibitDelayMaxUSec)
+  (( ${delay:-0} >= 15000000 )) && pass "Lock screen gets 15 s to lock before sleep" ||
+    warn_check "Only $(( ${delay:-0} / 1000000 )) s allowed to lock before sleep" "The screen can suspend unlocked when closing the lid also changes displays. Fix: ./setup.sh --only system-tweaks" system-tweaks
+  if [[ -d /sys/class/power_supply/BAT0 || -d /sys/class/power_supply/BAT1 ]] &&
+    [[ $(busctl call org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager CanHibernate 2>/dev/null) != *yes* ]]; then
+    warn_check "Hibernate is not available" "At critical battery the laptop can only suspend, and may run flat while asleep. Needs a disk swap file + resume setup (not automated yet)."
+  fi
+}
+
 check_first_run() {
   [[ -f $HOME/.local/state/omarchy/done/first-run-user ]] && pass "Omarchy first-run provisioning is skipped (as intended)" ||
     warn_check "Omarchy's first-run setup would run at next login" "It would set Chromium as default browser and run full-install hooks. Fix: ./setup.sh --only omarchy-defaults" omarchy-defaults
@@ -155,7 +170,7 @@ run_doctor() {
   DOCTOR_FAILS=0 DOCTOR_WARNS=0 DOCTOR_FIX_STEPS=()
   title "Health check"
   check_tree; check_links; check_commands; check_env; check_hypr_config
-  check_login; check_lock; check_first_run; check_patches; check_plugins
+  check_login; check_lock; check_power; check_first_run; check_patches; check_plugins
   check_shell_running; check_packages; check_updates
   echo
   if (( DOCTOR_FAILS == 0 && DOCTOR_WARNS == 0 )); then

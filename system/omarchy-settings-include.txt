@@ -1,0 +1,23 @@
+# Files taken from Omarchy's omarchy-settings package and installed system-wide.
+# They are read from the package each run, so Omarchy's improvements to them
+# arrive automatically. Paths are relative to the package root.
+#
+# Left out on purpose: bootloader/initramfs/SDDM/Plymouth files, memory tuning
+# (zram, zswap, swappiness, oomd: CachyOS ships its own), inotify and open-file
+# limits (CachyOS already sets them as high or higher), the passwordless sudo
+# rules (they point at /usr/bin/omarchy-* which doesn't exist here), and Wi-Fi /
+# USB power-saving off (costs battery).
+
+# Power button opens Omarchy's power menu instead of powering off instantly.
+etc/systemd/logind.conf.d/10-ignore-power-button.conf
+# Give the lock screen 15 s (not 5) to lock before suspend.
+etc/systemd/logind.conf.d/20-inhibit-delay.conf
+# Unmount Nautilus network drives before sleep so suspend can't hang on them.
+usr/lib/systemd/system-sleep/unmount-fuse
+# Shutdown doesn't wait 10+ s for stuck services.
+etc/systemd/system.conf.d/10-faster-shutdown.conf
+etc/systemd/system/user@.service.d/10-faster-shutdown.conf
+# No LLMNR/mDNS broadcasts (the firewall just logs and drops them).
+etc/systemd/resolved.conf.d/10-disable-multicast.conf
+# File indexing only on AC power.
+etc/systemd/system/plocate-updatedb.service.d/ac-only.conf

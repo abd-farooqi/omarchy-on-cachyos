@@ -272,7 +272,7 @@ cmd_install() {
 
 cmd_update() {
   ASSUME_YES=1
-  cmd_install "system-update,omarchy-core,packages,omarchy-defaults,patches,verify" "" 1 0
+  cmd_install "system-update,omarchy-core,packages,omarchy-defaults,patches,system-tweaks,verify" "" 1 0
 }
 
 cmd_doctor() {
