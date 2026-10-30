@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "abdullah.system-usage",
+  "name": "CPU and RAM",
+  "version": "1.2.0",
+  "author": "Abdullah",
+  "description": "Live CPU and memory usage with click-open detail panels",
+  "kinds": ["bar-widget"],
+  "entryPoints": {"barWidget": "BarWidget.qml"},
+  "barWidget": {"displayName": "CPU and RAM", "category": "System", "allowMultiple": false}
+}

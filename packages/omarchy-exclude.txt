@@ -1,0 +1,44 @@
+# Removed from Omarchy's own package list before installing it.
+# Omarchy's list lives in $OMARCHY_PATH/install/omarchy-base.packages and is
+# read fresh on every run, so new Omarchy packages are picked up automatically.
+# Delete a line here to start installing that package.
+
+# Would replace CachyOS's boot setup, login screen or kernel (the reason this exists)
+sddm
+limine
+limine-mkinitcpio-hook
+limine-snapper-sync
+plymouth
+kernel-modules-hook
+linux-omarchy
+linux-omarchy-headers
+omarchy-keyring
+omarchy-settings
+omarchy
+
+# CachyOS ships its own version; installing Omarchy's would conflict
+mise-bin
+
+# Not used on the previous setup
+fcitx5
+fcitx5-gtk
+fcitx5-qt
+omarchy-nvim
+tzupdate
+aether
+asdcontrol
+cliamp
+foot
+gnome-themes-extra
+herdr
+omacalc
+omacut
+omawrite
+tensaku
+tobi-try
+python-poetry-core
+qemu-user-static-binfmt
+ufw-docker
+omarchy-themes-intros           # theme-change intro videos (large download)
+ttf-jetbrains-mono-nerd-basic   # ttf-jetbrains-mono-nerd (in core.txt) is the full version
+yaru-icon-theme

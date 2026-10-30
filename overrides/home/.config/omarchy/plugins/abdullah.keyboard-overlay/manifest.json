@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "abdullah.keyboard-overlay",
+  "name": "Urdu and Pashto keyboard overlay",
+  "version": "1.0.0",
+  "author": "abdullah",
+  "description": "Shows a non-blocking Urdu or Pashto keyboard map while typing",
+  "kinds": [
+    "service"
+  ],
+  "keepLoaded": true,
+  "entryPoints": {
+    "service": "KeyboardOverlay.qml"
+  }
+}

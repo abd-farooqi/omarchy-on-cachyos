@@ -1,0 +1,42 @@
+# Desktop apps.
+firefox
+brave-bin
+discord
+signal-desktop
+telegram-desktop
+claude-desktop
+obsidian
+libreoffice-fresh
+evince
+imv
+mpv
+qview
+pinta
+kdenlive
+obs-studio
+xournalpp
+localsend
+moonlight-qt
+gnome-text-editor
+gnome-disk-utility
+nautilus
+sushi
+file-roller
+7zip
+kruler
+meld
+
+# Printing, phones and network shares
+cups
+cups-filters
+cups-pk-helper
+system-config-printer
+gvfs-mtp
+gvfs-nfs
+gvfs-smb
+bluez-tools
+bolt
+
+# Fonts
+noto-fonts-extra
+ttf-victor-mono-nerd

@@ -1,0 +1,60 @@
+# Needed for the Omarchy desktop to work on CachyOS. Always installed.
+# Names are resolved CachyOS/Arch repo → Omarchy repo → AUR, so a package
+# moving between them is handled automatically.
+
+# Session
+hyprland
+uwsm
+quickshell
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+hyprland-preview-share-picker   # Omarchy repo; screen-share picker used in hypr/xdph.conf
+hyprsunset
+layer-shell-qt
+greetd
+greetd-tuigreet
+
+# Tools Omarchy's scripts call
+gum
+jq
+git
+perl
+fakeroot
+pacman-contrib
+socat
+wtype
+xdg-terminal-exec
+pamixer
+brightnessctl
+playerctl
+inotify-tools
+udiskie
+libnotify
+wl-clipboard
+tesseract
+tesseract-data-eng
+gpu-screen-recorder
+omasnap                         # Omarchy repo; screenshots
+ttfx                            # Omarchy repo; screensaver
+gnome-keyring
+python
+
+# Audio
+pipewire
+pipewire-pulse
+pipewire-alsa
+pipewire-jack
+wireplumber
+
+# Look and feel
+kitty
+neovim
+ttf-jetbrains-mono-nerd
+qt6ct
+qt5-wayland
+qt6-wayland
+kconfig                         # kwriteconfig6, used by the theme-set hook
+nwg-look
+adw-gtk-theme
+gnome-calculator                # SUPER+CTRL+Q binding
+btop                            # CTRL+SHIFT+Escape binding

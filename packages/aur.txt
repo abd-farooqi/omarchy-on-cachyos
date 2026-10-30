@@ -1,0 +1,14 @@
+# Apps that only exist in the AUR (or vendor repos). Built with yay/paru.
+google-chrome
+1password
+1password-cli
+slack-desktop
+spotify
+visual-studio-code-bin
+typora
+chatgpt-bin
+t3code-bin
+hubstaff
+ngrok
+ttf-ia-writer
+bibata-cursor-theme-bin         # cursor set in uwsm/env

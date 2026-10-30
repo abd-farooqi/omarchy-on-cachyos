@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "abdullah.desktop-status",
+  "name": "Notifications",
+  "version": "1.1.0",
+  "author": "Abdullah",
+  "description": "Notification history and Do Not Disturb controls",
+  "kinds": ["bar-widget"],
+  "entryPoints": {"barWidget": "BarWidget.qml"},
+  "barWidget": {"displayName": "Desktop status", "category": "System", "allowMultiple": false}
+}

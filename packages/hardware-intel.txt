@@ -1,0 +1,4 @@
+# Installed only when an Intel GPU is detected.
+intel-media-driver
+vpl-gpu-rt
+vulkan-intel

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "abdullah.prayer-times",
+  "name": "Hanafi Prayer Times",
+  "version": "1.0.0",
+  "author": "Abdullah",
+  "description": "Next prayer with a click-open Hanafi timetable and automatic IP location",
+  "kinds": ["bar-widget"],
+  "entryPoints": {"barWidget": "BarWidget.qml"},
+  "barWidget": {
+    "displayName": "Prayer Times",
+    "description": "Hanafi prayer times from AlAdhan",
+    "category": "Time",
+    "allowMultiple": false
+  }
+}
